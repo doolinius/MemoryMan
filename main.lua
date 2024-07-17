@@ -3,6 +3,7 @@ require('fixed_partitions')
 require('dynamic_partitions')
 
 function love.load()
+	love.window.setTitle("Memory Management Visualization")
   math.randomseed(os.time())
   love.window.setMode(900, 600)
   windowWidth, windowHeight = love.graphics.getDimensions()
