@@ -43,6 +43,11 @@ function FP:Create(partitionSizes, algorithm)
   return(this)
 end
 
+function FP:setAllocationAlgorithm(algorithm)
+	self.algorithm = algorithm
+	self.allocate = FP[algorithm]
+end
+
 function FP:addJobToQueue(job)
   if job.size > self.maxSize then
     table.insert(self.rejected, job)
@@ -246,6 +251,7 @@ function FP:draw()
   self:drawMemory()
   self:drawWaiting()
   self:drawStats()
+  drawInstructions()
 end
 
 function FP:stats()

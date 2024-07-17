@@ -45,6 +45,11 @@ function DynP:Create(size, algorithm)
   return(this)
 end
 
+function DynP:setAllocationAlgorithm(algorithm)
+	self.algorithm = algorithm
+	self.allocate = DynP[algorithm]
+end
+
 function DynP:getSize()
   local size = 0
   for i, p in ipairs(self.partitions) do 
@@ -317,8 +322,8 @@ function DynP:drawStats()
   love.graphics.print("Total Memory: " .. stats.total, xOffset, self.y)
   love.graphics.print("Total Used  : " .. stats.used, xOffset, self.y + 18)
   love.graphics.print("% Used: " .. percent(stats.used / stats.total), xOffset, self.y + 36)
-  love.graphics.print("Fragmentation: " .. stats.internalFrag, xOffset, self.y + (18 *3))
-  love.graphics.print("% Fragmentation " .. percent(stats.internalFrag / stats.total), xOffset, self.y + (18*4))
+  love.graphics.print("Fragmentation: " .. stats.externalFrag, xOffset, self.y + (18 *3))
+  love.graphics.print("% Fragmentation " .. percent(stats.externalFrag / stats.total), xOffset, self.y + (18*4))
   love.graphics.print("Jobs Rejected (size): " .. stats.rejected, xOffset, self.y + (18*5))
 end
 
@@ -330,6 +335,7 @@ function DynP:draw()
   self:drawMemory()
   self:drawWaiting()
   self:drawStats()
+  drawInstructions()
 end
 
 function DynP:stats()
@@ -337,11 +343,12 @@ function DynP:stats()
   stats.total = self.total
   stats.rejected = #self.rejected
   stats.used = 0
-  stats.internalFrag = 0
+  stats.externalFrag = 0
   for i, p in ipairs(self.partitions) do
     if p.busy then
       stats.used = stats.used + p.job.size
-      stats.internalFrag = stats.internalFrag + (p.size - p.job.size)
+    else
+      stats.externalFrag = stats.externalFrag + p.size
     end
   end
   stats.unused = self.total - stats.used
