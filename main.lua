@@ -9,10 +9,10 @@ function love.load()
   love.graphics.setBackgroundColor(0.2, 0.2, 0.35, 1)
 
   --memory = FP:Create({20, 20, 20, 20, 20, 20}, 'firstFit')
-  --memory = FP:Create({5, 10, 15, 20, 30, 40}, 'bestFit')
-  memory = DynP:Create(120, 'firstFit')
-  j = Job:Create(15, 5)
-  memory:addJobToQueue(j)
+  memory = FP:Create({5, 10, 15, 20, 30, 40}, 'bestFit')
+  --memory = DynP:Create(120, 'firstFit')
+  --j = Job:Create(15, 5)
+  --memory:addJobToQueue(j)
   paused = false
 end
 
